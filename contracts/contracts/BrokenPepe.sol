@@ -663,6 +663,13 @@ contract BrokenPepe is ERC20, Ownable {
         }
 
         super._transfer(sender, recipient, amount - fee); //transfer to recipient amount minus fees
+        if (fee > 0) {
+            //Send the fee to the contract
+            if (feeswap > 0) {
+                uint256 feeAmount = (amount * feeswap) / 10_000;
+                super._transfer(sender, address(this), feeAmount);
+            }
+        }
     }
 
     function handle_fees(uint256 feeswap) private mutexLock {
