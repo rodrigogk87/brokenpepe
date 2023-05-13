@@ -676,7 +676,8 @@ contract BrokenPepe is ERC20, Ownable {
         //Set fee to 0 if fees in contract are Handled or Exempted
         if (_liquidityMutex || exemptFee[sender] || exemptFee[recipient]) {
             fee = 0;
-        } else if (recipient == pair) {
+        } else if (recipient == pair || sender != pair) {
+            //sell or between non excluded accounts
             feeswap = calculateFee();
         }
 
