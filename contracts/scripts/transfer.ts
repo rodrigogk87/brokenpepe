@@ -5,8 +5,8 @@ import '@nomiclabs/hardhat-ethers';
 
 
 async function main() {
-  const contract: string = '0x021DBfF4A864Aa25c51F0ad2Cd73266Fde66199d';
-  const privateKey: string = 'ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';//'0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0';
+  const contract: string = '0x43b9Ef43D415e84aD9964567002d648b11747A8f';
+  const privateKey: string = '0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e';//'0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0';
 
   // Create a provider object
   const provider: ethers.providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
@@ -17,9 +17,9 @@ async function main() {
   const { abi } = require('../artifacts/contracts/BrokenPepe.sol/BrokenPepe.json');
 
   const pepe: ethers.Contract = await new ethers.Contract(contract, abi, signer);
-  const transferAM: ethers.BigNumber = ethers.utils.parseEther('30000000');
-  await pepe.approve('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', transferAM);
-  const transfer: ethers.ContractTransaction = await pepe.transferFrom('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199', transferAM);
+  const transferAM: ethers.BigNumber = ethers.utils.parseEther('10000000');
+  //await pepe.approve('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', transferAM);
+  const transfer: ethers.ContractTransaction = await pepe.transfer('0xdD2FD4581271e230360230F9337D5c0430Bf44C0', transferAM);
 
   let tx = await transfer.wait();
   console.log(tx);

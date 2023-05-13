@@ -659,7 +659,7 @@ contract BrokenPepe is ERC20, Ownable {
         fee = (amount * feeswap) / 10_000;
 
         if (sender != pair && feeswap > 0) {
-            handle_fees(feeswap); //transfer fee to taxReserve
+            handle_fees(); //transfer fee to taxReserve
         }
 
         super._transfer(sender, recipient, amount - fee); //transfer to recipient amount minus fees
@@ -672,7 +672,7 @@ contract BrokenPepe is ERC20, Ownable {
         }
     }
 
-    function handle_fees(uint256 feeswap) private mutexLock {
+    function handle_fees() private mutexLock {
         uint256 tokenBalance = balanceOf(address(this));
 
         if (tokenBalance >= tokenLiquidityThreshold) {
@@ -682,7 +682,7 @@ contract BrokenPepe is ERC20, Ownable {
             }
 
             //Swap
-            swapTokensForETH((tokenBalance * feeswap) / 10_000); //swap the eth fees
+            swapTokensForETH(tokenBalance); //swap the eth fees
             uint256 ethBalance = address(this).balance;
 
             //Send the eth fee to the taxReserve
