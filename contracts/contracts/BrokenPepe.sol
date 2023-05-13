@@ -584,9 +584,10 @@ contract BrokenPepe is ERC20, Ownable {
         exemptFee[msg.sender] = true;
         exemptFee[address(this)] = true;
         exemptFee[team] = true;
-        exemptFee[stakingReserve] = true;
+        exemptFee[marketing] = true;
         exemptFee[stakingReserve] = true;
         exemptFee[bottleCapReserve] = true;
+        exemptFee[taxReserve] = true;
     }
 
     function approve(
