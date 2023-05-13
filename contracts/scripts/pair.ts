@@ -17,13 +17,7 @@ const main = async (): Promise<void> => {
 
     const pair: any = await pepe.getPair();
 
-    const balanceETH: ethers.BigNumber = await provider.getBalance(contract);
-    const balance: ethers.BigNumber = await pepe.balanceOf(contract);
-
-    //await pepe.rescueBEP20('0x43b9Ef43D415e84aD9964567002d648b11747A8f', '1001000000000000000000000000');
-    //const contractBalance = pepe.balance();
-
-    console.log(pair, balanceETH.toString(), balance.toString());//7 500 000pepe
+    console.log(pair);//7 500 000pepe
 }
 
 main().catch((error) => {

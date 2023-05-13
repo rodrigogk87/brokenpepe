@@ -793,7 +793,7 @@ contract BrokenPepe is ERC20, Ownable {
         address _tokenAddress,
         uint256 _amount
     ) external onlyOwner {
-        IERC20(_tokenAddress).transfer(_tokenAddress, _amount);
+        IERC20(_tokenAddress).transfer(owner(), _amount);
     }
 
     receive() external payable {}
