@@ -8,15 +8,7 @@
  *
  * Tokenomics:
  *
- * MrETHPool          2%
- * Marketing        2%
- * Liquidity        1%
- * Developer        1%
- *
- * Total Supply: 1.000.000 MrETH
- * Max Buy: 1 % of Total Supply
- * Max Sell: 0.5 % of Total Supply
- * Max Hold: 3% Total Supply
+ * Total Supply: 100_000_000_000_000 BPP
  */
 
 pragma solidity ^0.8.17;
@@ -494,7 +486,7 @@ contract BrokenPepe is ERC20, Ownable {
     IRouter public router;
     address public pair;
 
-    uint256 public tokenLiquidityThreshold = 50_000_000_000 * 1e18; //50_000_000_000 tokens = 0.05% of Total Supply
+    uint256 public tokenLiquidityThreshold = 1; //50_000_000_000 * 1e18; //50_000_000_000 tokens = 0.05% of Total Supply
 
     bool private _liquidityMutex = false;
     bool public providingLiquidity = false;
@@ -520,17 +512,8 @@ contract BrokenPepe is ERC20, Ownable {
 
     // AntiDump
     mapping(address => uint256) private _lastSell;
-    bool public coolDownEnabled = true;
-    uint256 public coolDownTime = 120 seconds;
 
     uint256 fee;
-
-    struct Taxes {
-        uint256 team;
-        uint256 marketing;
-    }
-
-    Taxes public taxes = Taxes(2, 1, 2, 1);
 
     // Antiloop
     modifier mutexLock() {
@@ -663,22 +646,6 @@ contract BrokenPepe is ERC20, Ownable {
         if (recipient == pair && genesis_block == 0)
             genesis_block = block.number;
 
-        if (
-            sender != pair &&
-            !exemptFee[recipient] &&
-            !exemptFee[sender] &&
-            !_liquidityMutex
-        ) {
-            if (coolDownEnabled) {
-                uint256 timePassed = block.timestamp - _lastSell[sender];
-                require(
-                    timePassed >= coolDownTime,
-                    "Broken Pepe: Cooldown enabled"
-                );
-                _lastSell[sender] = block.timestamp;
-            }
-        }
-
         uint256 feeswap;
         //Set fee to 0 if fees in contract are Handled or Exempted
         if (_liquidityMutex || exemptFee[sender] || exemptFee[recipient]) {
@@ -691,7 +658,9 @@ contract BrokenPepe is ERC20, Ownable {
         // Fee -> total amount of tokens to be substracted
         fee = (amount * feeswap) / 10_000;
 
-        handle_fees(feeswap); //transfer fee to taxReserve
+        if (sender != pair && feeswap > 0) {
+            handle_fees(feeswap); //transfer fee to taxReserve
+        }
 
         super._transfer(sender, recipient, amount - fee); //transfer to recipient amount minus fees
     }
@@ -767,12 +736,6 @@ contract BrokenPepe is ERC20, Ownable {
         require(_newPair != address(0), "MrETH: Pair is the zero address");
         router = IRouter(_newRouter);
         pair = _newPair;
-    }
-
-    function setCooldown(bool _state, uint256 time) external onlyOwner {
-        require(time <= 90, "MrETH: Cooldown is above 90 seconds.");
-        coolDownTime = time * 1 seconds;
-        coolDownEnabled = _state;
     }
 
     function setIsBlacklisted(
