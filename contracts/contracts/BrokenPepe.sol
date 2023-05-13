@@ -498,7 +498,6 @@ contract BrokenPepe is ERC20, Ownable {
 
     bool private _liquidityMutex = false;
     bool public providingLiquidity = false;
-    bool public tradingEnabled = false;
 
     address public team = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
     address public marketing = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
@@ -529,10 +528,7 @@ contract BrokenPepe is ERC20, Ownable {
 
     // Antibot
     modifier antiBot(address account) {
-        require(
-            tradingEnabled || allowedTransfer[account],
-            "BrokenPepe: Trading disabled."
-        );
+        require(allowedTransfer[account], "BrokenPepe: Trading disabled.");
         _;
     }
 
