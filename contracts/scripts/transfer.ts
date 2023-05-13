@@ -17,12 +17,14 @@ async function main() {
   const { abi } = require('../artifacts/contracts/BrokenPepe.sol/BrokenPepe.json');
 
   const pepe: ethers.Contract = await new ethers.Contract(contract, abi, signer);
-  const transferAM: ethers.BigNumber = ethers.utils.parseEther('10000000');
+  const transferAM: ethers.BigNumber = ethers.utils.parseEther('100000000');
   //await pepe.approve('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', transferAM);
   const transfer: ethers.ContractTransaction = await pepe.transfer('0xdD2FD4581271e230360230F9337D5c0430Bf44C0', transferAM);
 
   let tx = await transfer.wait();
   console.log(tx);
+  //100000000
+  //  7500000
 }
 
 main().catch((error: Error) => {
