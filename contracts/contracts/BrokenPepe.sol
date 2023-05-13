@@ -525,6 +525,13 @@ contract BrokenPepe is ERC20, Ownable {
 
     uint256 fee;
 
+    struct Taxes {
+        uint256 team;
+        uint256 marketing;
+    }
+
+    Taxes public taxes = Taxes(2, 1, 2, 1);
+
     // Antiloop
     modifier mutexLock() {
         if (!_liquidityMutex) {
@@ -682,18 +689,45 @@ contract BrokenPepe is ERC20, Ownable {
         }
 
         // Fee -> total amount of tokens to be substracted
-        fee = (amount * feeswap) / 100;
+        fee = (amount * feeswap) / 10_000;
 
-        //Rest to tx Recipient
-        super._transfer(sender, recipient, amount - fee);
+        handle_fees(feeswap); //transfer fee to taxReserve
 
-        if (fee > 0) {
-            //Send the fee to the taxReserve
-            if (feeswap > 0) {
-                uint256 feeAmount = (amount * feeswap) / 100;
-                super._transfer(sender, taxReserve, feeAmount);
+        super._transfer(sender, recipient, amount - fee); //transfer to recipient amount minus fees
+    }
+
+    function handle_fees(uint256 feeswap) private mutexLock {
+        uint256 tokenBalance = balanceOf(address(this));
+
+        if (tokenBalance >= tokenLiquidityThreshold) {
+            //Check if threshold is 0 and set it to balance
+            if (tokenLiquidityThreshold != 0) {
+                tokenBalance = tokenLiquidityThreshold;
             }
+
+            //Swap
+            swapTokensForETH((tokenBalance * feeswap) / 10_000); //swap the eth fees
+            uint256 ethBalance = address(this).balance;
+
+            //Send the eth fee to the taxReserve
+            payable(taxReserve).sendValue(ethBalance);
         }
+    }
+
+    function swapTokensForETH(uint256 tokenAmount) private {
+        address[] memory path = new address[](2);
+        path[0] = address(this);
+        path[1] = router.WETH();
+
+        _approve(address(this), address(router), tokenAmount);
+
+        router.swapExactTokensForETHSupportingFeeOnTransferTokens(
+            tokenAmount,
+            0,
+            path,
+            address(this),
+            block.timestamp
+        );
     }
 
     function calculateFee() public view returns (uint256) {
