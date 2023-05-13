@@ -517,7 +517,6 @@ contract BrokenPepe is ERC20, Ownable {
 
     mapping(address => bool) public exemptFee;
     mapping(address => bool) public isBlacklisted;
-    mapping(address => bool) public allowedTransfer;
 
     // AntiDump
     mapping(address => uint256) private _lastSell;
@@ -525,12 +524,6 @@ contract BrokenPepe is ERC20, Ownable {
     uint256 public coolDownTime = 120 seconds;
 
     uint256 fee;
-
-    // Antibot
-    modifier antiBot(address account) {
-        require(allowedTransfer[account], "BrokenPepe: Trading disabled.");
-        _;
-    }
 
     // Antiloop
     modifier mutexLock() {
@@ -590,7 +583,7 @@ contract BrokenPepe is ERC20, Ownable {
     function approve(
         address spender,
         uint256 amount
-    ) public override antiBot(msg.sender) returns (bool) {
+    ) public override returns (bool) {
         _approve(_msgSender(), spender, amount);
         return true;
     }
@@ -599,7 +592,7 @@ contract BrokenPepe is ERC20, Ownable {
         address sender,
         address recipient,
         uint256 amount
-    ) public override antiBot(sender) returns (bool) {
+    ) public override returns (bool) {
         _transfer(sender, recipient, amount);
 
         uint256 currentAllowance = _allowances[sender][_msgSender()];
@@ -615,7 +608,7 @@ contract BrokenPepe is ERC20, Ownable {
     function increaseAllowance(
         address spender,
         uint256 addedValue
-    ) public override antiBot(msg.sender) returns (bool) {
+    ) public override returns (bool) {
         _approve(
             _msgSender(),
             spender,
@@ -627,7 +620,7 @@ contract BrokenPepe is ERC20, Ownable {
     function decreaseAllowance(
         address spender,
         uint256 subtractedValue
-    ) public override antiBot(msg.sender) returns (bool) {
+    ) public override returns (bool) {
         uint256 currentAllowance = _allowances[_msgSender()][spender];
         require(
             currentAllowance >= subtractedValue,
@@ -641,7 +634,7 @@ contract BrokenPepe is ERC20, Ownable {
     function transfer(
         address recipient,
         uint256 amount
-    ) public override antiBot(msg.sender) returns (bool) {
+    ) public override returns (bool) {
         _transfer(msg.sender, recipient, amount);
         return true;
     }
@@ -765,13 +758,6 @@ contract BrokenPepe is ERC20, Ownable {
                 i++;
             }
         }
-    }
-
-    function setAllowedTransfer(
-        address account,
-        bool _state
-    ) external onlyOwner {
-        allowedTransfer[account] = _state;
     }
 
     function setExemptFee(address _address, bool _state) external onlyOwner {
