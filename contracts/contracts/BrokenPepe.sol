@@ -500,11 +500,12 @@ contract BrokenPepe is ERC20, Ownable {
     bool public providingLiquidity = false;
     bool public tradingEnabled = false;
 
-    address public team;
-    address public marketing;
-    address public stakingReserve;
-    address public bottleCapReserve;
-    address public taxReserve;
+    address public team = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
+    address public marketing = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
+    address public stakingReserve = 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
+    address public bottleCapReserve =
+        0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65;
+    address public taxReserve = 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc;
 
     uint256 public teamAllocation;
     uint256 public marketingAllocation;
@@ -513,7 +514,7 @@ contract BrokenPepe is ERC20, Ownable {
 
     uint256 public genesis_block;
 
-    address public routerAddress = 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506; //Arbitrum Nitro Router
+    address public routerAddress = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D; //uniswapv2
 
     mapping(address => bool) public exemptFee;
     mapping(address => bool) public isBlacklisted;
