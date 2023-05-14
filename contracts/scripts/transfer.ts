@@ -32,7 +32,7 @@ import '@nomiclabs/hardhat-ethers';
 
 async function main() {
   const contract: string = '0x96E303b6D807c0824E83f954784e2d6f3614f167';
-  const privateKey: string = '0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0';//'0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0';
+  const privateKey: string = '';//'0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0';
 
   // Create a provider object
   const provider: ethers.providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");

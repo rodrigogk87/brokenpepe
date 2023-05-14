@@ -5,7 +5,7 @@ import { abi } from '../artifacts/contracts/BrokenPepe.sol/BrokenPepe.json'
 async function swap() {
     // Connect to the Ethereum network using an Infura API key
     // Create a wallet object
-    const privateKey: string = '0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e';
+    const privateKey: string = '';
 
     const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
 

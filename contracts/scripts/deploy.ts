@@ -5,7 +5,7 @@ async function main() {
   // Replace these with actual addresses
   const BrokePepe = await ethers.getContractFactory("BrokenPepe");
   //param taxReserve address
-  const brokePepe = await BrokePepe.deploy("0x70997970C51812dc3A010C7d01b50e0d17dc79C8", { gasLimit: 5000000 });
+  const brokePepe = await BrokePepe.deploy("0x0A426EB9a7A6baB9798d5A5823bEE4a2343b24d3", { gasLimit: 5000000 });
 
   await brokePepe.deployed();
 

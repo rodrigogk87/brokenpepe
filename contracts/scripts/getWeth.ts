@@ -1,8 +1,11 @@
 import { ethers } from 'ethers';
 
-const provider: ethers.providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
-const privateKey: string = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
-const wethContractAddress: string = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+//const provider: ethers.providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+const provider: ethers.providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider(`https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY_MUMBAI}`);
+
+const privateKey: string = '';
+//"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"; eth main
+const wethContractAddress: string = '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889';//mumbai wmatic
 
 const abi: string[] = [
     'function deposit() payable',
@@ -16,8 +19,7 @@ const wrapEth = async (amount: ethers.BigNumber) => {
     const balanceBefore: ethers.BigNumber = await wethContract.balanceOf(signer.address);
 
     const tx: ethers.ContractTransaction = await wethContract.deposit({
-        value: amount,
-        gasLimit: 30000000 // set gas price to 100 gwei
+        value: amount// set gas price to 100 gwei
     });
     await tx.wait();
 
@@ -28,4 +30,4 @@ const wrapEth = async (amount: ethers.BigNumber) => {
 }
 
 // Example usage: wrap 1 ETH into WETH
-wrapEth(ethers.utils.parseEther('1'));
+wrapEth(ethers.utils.parseEther('0.1'));

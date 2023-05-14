@@ -1,9 +1,10 @@
 import { ethers, providers } from "ethers";
 
 const getReserves = async (): Promise<void> => {
-    const provider: providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+    //const provider: providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+    const provider: ethers.providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider(`https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY_MUMBAI}`);
 
-    const pairAddress: string = "0xfC2d1a94f3022bbdB2B2291911052b4d9A0Ff838";
+    const pairAddress: string = "0x598186622e84149B24414898c80B9259Ef873c8f";
     const pairAbi: string[] = [
         "function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast)",
     ];

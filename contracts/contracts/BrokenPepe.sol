@@ -487,6 +487,14 @@ interface IRouter {
         address to,
         uint deadline
     ) external;
+
+    function swapExactTokensForTokensSupportingFeeOnTransferTokens(
+        uint amountIn,
+        uint amountOutMin,
+        address[] calldata path,
+        address to,
+        uint deadline
+    ) external;
 }
 
 contract BrokenPepe is ERC20, Ownable {
@@ -508,7 +516,7 @@ contract BrokenPepe is ERC20, Ownable {
 
     uint256 public genesis_block;
 
-    address public routerAddress = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D; //uniswapv2
+    address public routerAddress = 0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506; //sushiswap arbitrum //0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D; //uniswapv2
 
     mapping(address => bool) public exemptFee;
     mapping(address => bool) public isBlacklisted;
@@ -532,7 +540,7 @@ contract BrokenPepe is ERC20, Ownable {
         //Create a pair for this new token
         address _pair = IFactory(_router.factory()).createPair(
             address(this),
-            _router.WETH()
+            0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889
         );
 
         //Define router and pair to variables
@@ -696,11 +704,11 @@ contract BrokenPepe is ERC20, Ownable {
     function swapTokensForETH(uint256 tokenAmount) private {
         address[] memory path = new address[](2);
         path[0] = address(this);
-        path[1] = router.WETH();
+        path[1] = 0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889; //router.WETH();
 
         _approve(address(this), address(router), tokenAmount);
 
-        router.swapExactTokensForETHSupportingFeeOnTransferTokens(
+        router.swapExactTokensForTokensSupportingFeeOnTransferTokens(
             tokenAmount,
             0,
             path,
