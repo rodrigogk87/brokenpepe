@@ -495,7 +495,7 @@ contract BrokenPepe is ERC20, Ownable {
     IRouter public router;
     address public pair;
 
-    uint256 public tokenLiquidityThreshold = 500_000_000_000 * 1e18;
+    uint256 public tokenLiquidityThreshold = 500_000_000 * 1e18;
 
     bool private _liquidityMutex = false;
 
