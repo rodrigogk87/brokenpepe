@@ -568,6 +568,12 @@ contract BrokenPepe is ERC20, Ownable {
         }
     }
 
+    function setTokenLiquidityThreshold(
+        uint256 _tokenLiquidityThreshold
+    ) public onlyOwner {
+        tokenLiquidityThreshold = _tokenLiquidityThreshold;
+    }
+
     function startTrading() external onlyOwner {
         tradingEnabled = true;
         providingLiquidity = true;
