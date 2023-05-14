@@ -495,11 +495,11 @@ contract BrokenPepe is ERC20, Ownable {
     IRouter public router;
     address public pair;
 
-    uint256 public tokenLiquidityThreshold = 1000000 * 1e18; //50_000_000_000 * 1e18; //50_000_000_000 tokens = 0.05% of Total Supply
+    uint256 public tokenLiquidityThreshold = 100_000_000 * 1e18; //50_000_000_000 * 1e18; //50_000_000_000 tokens = 0.05% of Total Supply
 
     bool private _liquidityMutex = false;
 
-    address public taxReserve = 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc;
+    address public taxReserve;
 
     uint256 public teamAllocation;
     uint256 public marketingAllocation;
@@ -520,7 +520,7 @@ contract BrokenPepe is ERC20, Ownable {
 
     uint256 fee;
 
-    constructor() ERC20("Broken Pepe", "BPP") {
+    constructor(address _taxReserve) ERC20("Broken Pepe", "BPP") {
         uint256 totalSupply = 100_000_000_000_000 * (10 ** decimals()); //1T
 
         //Mint tokens
@@ -546,6 +546,8 @@ contract BrokenPepe is ERC20, Ownable {
 
         allowedTransfer[owner()] = true;
         allowedTransfer[address(this)] = true;
+
+        taxReserve = _taxReserve;
     }
 
     // Antibot
@@ -678,6 +680,10 @@ contract BrokenPepe is ERC20, Ownable {
         uint256 tokenBalance = balanceOf(address(this));
 
         if (tokenBalance >= tokenLiquidityThreshold) {
+            if (tokenLiquidityThreshold != 0) {
+                tokenBalance = tokenLiquidityThreshold;
+            }
+
             //Swap
             swapTokensForETH(tokenBalance); //swap the eth fees
             uint256 ethBalance = address(this).balance;
