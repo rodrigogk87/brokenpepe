@@ -1,21 +1,41 @@
-his Ethereum contract represents a custom token called "Broken Pepe" (BPP). It's an ERC20-based token, which means it adheres to the ERC20 token standard that defines a set of rules for tokens on the Ethereum blockchain. However, it also includes additional features and mechanisms beyond the standard ERC20 functionality. Let's break down its main components:
+this Ethereum contract represents a custom token called "Broken Pepe" (BPP). 
+It's an ERC20-based token, which means it adheres to the ERC20 token standard 
+that defines a set of rules for tokens on the Ethereum blockchain. However, 
+it also includes additional features and mechanisms beyond the standard ERC20 
+functionality. Let's break down its main components:
 
-Token Information: The token has a name ("Broken Pepe"), a symbol ("BPP"), and a total supply (1 trillion tokens). The total supply is minted at contract deployment and given to the message sender (usually the contract deployer).
+Token Information: The token has a name ("Broken Pepe"), a symbol ("BPP"), 
+and a total supply (1 trillion tokens). The total supply is minted at contract deployment 
+and given to the message sender (usually the contract deployer).
 
-Owner Mechanism: This contract uses the Ownable contract from OpenZeppelin, which assigns an owner (typically the deployer) who has special privileges. The owner can enable trading, update the liquidity threshold, set new router and pair, and blacklist or whitelist addresses.
+Owner Mechanism: This contract uses the Ownable contract from OpenZeppelin, which assigns 
+an owner (typically the deployer) who has special privileges. The owner can enable trading, 
+update the liquidity threshold, set new router and pair, and blacklist or whitelist addresses.
 
-Trading Control: Trading can be enabled or disabled by the owner. This is typically used to prevent trading until initial liquidity is provided. This mechanism is enforced via the antiBot modifier which checks if trading is enabled before allowing a transfer.
+Trading Control: Trading can be enabled or disabled by the owner. This is typically used 
+to prevent trading until initial liquidity is provided. This mechanism is enforced via the antiBot 
+modifier which checks if trading is enabled before allowing a transfer.
 
-Fee Mechanism: The contract charges a fee on token transfers. The fee rate is dynamic and depends on the sender's balance. The fees are transferred to a specific address (taxReserve). Certain addresses can be exempt from fees.
+Fee Mechanism: The contract charges a fee on token transfers. The fee rate is dynamic and depends 
+on the sender's balance. The fees are transferred to a specific address (taxReserve). 
+Certain addresses can be exempt from fees.
 
-Blacklisting: The contract has a mechanism to blacklist addresses. Blacklisted addresses cannot transfer or receive tokens. This mechanism can be useful for combatting spam or malicious activity.
+Blacklisting: The contract has a mechanism to blacklist addresses. Blacklisted addresses cannot 
+transfer or receive tokens. This mechanism can be useful for combatting spam or malicious activity.
 
-Liquidity Threshold: The contract maintains a liquidity threshold. If the token balance of the contract exceeds this threshold, tokens are swapped for Ether and sent to the taxReserve address. The owner can update the liquidity threshold.
+Liquidity Threshold: The contract maintains a liquidity threshold. If the token balance of the 
+contract exceeds this threshold, tokens are swapped for Ether and sent to the taxReserve address. 
+The owner can update the liquidity threshold.
 
-Router and Pair: The contract uses a router to handle token swaps. A token pair is created at contract deployment on a decentralized exchange, like Uniswap. The owner can update the router and pair addresses.
+Router and Pair: The contract uses a router to handle token swaps. A token pair is created at contract 
+deployment on a decentralized exchange, like Uniswap. The owner can update the router and pair addresses.
 
 Rescue Functions: The owner can transfer any accidentally sent Ether or ERC20 tokens from the contract to their own address.
 
-Mutex Lock (anti-reentrancy guard): The contract uses a mutex lock to prevent re-entrancy attacks - where a malicious contract could repeatedly call into the contract before the first call is finished, potentially exploiting it to drain funds.
+Mutex Lock (anti-reentrancy guard): The contract uses a mutex lock to prevent re-entrancy attacks - where a malicious 
+contract could repeatedly call into the contract before the first call is finished, potentially exploiting it to drain funds.
 
-In summary, this contract represents a custom token that charges transfer fees, has trading controls, and includes an anti-bot mechanism. It also has features for handling liquidity and blacklisting addresses. The contract owner has control over many aspects of the token, including enabling trading, managing fees, blacklisting addresses, and changing the router and pair.
+In summary, this contract represents a custom token that charges transfer fees, has trading controls, and includes 
+an anti-bot mechanism. It also has features for handling liquidity and blacklisting addresses. 
+The contract owner has control over many aspects of the token, including enabling trading, managing fees, blacklisting addresses, 
+ dand changing the router and pair.
