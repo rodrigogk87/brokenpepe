@@ -1,0 +1,24 @@
+General:
+The contract BrokenPepe is an ERC20-based token with additional features such as transfer fees, blacklisting, and a mechanism for 
+enabling/disabling trading. This contract is designed to be owned by a specific Ethereum account, and allows that account 
+to perform privileged operations such as blacklisting/un-blacklisting addresses, exempting addresses from fees, enabling/disabling 
+trading, and changing the liquidity threshold and router/pair addresses.
+
+Contract Audit:
+ERC20 Compliance: The contract complies with the ERC20 standard, as it overrides the necessary functions from the base ERC20 contract.
+
+ERC20 Extensions: This contract extends the base ERC20 token with features like trading controls (enabling/disabling trading, adding a 
+fee to transfers), blacklisting, fee exemption, and liquidity provision.
+
+Fee Handling: Fees are collected and sent to the tax reserve address. The fee is a percentage of the transferred amount and it depends 
+on the sender's balance.
+
+Owner Privileges: The contract has an onlyOwner modifier, which restricts certain actions to only the contract owner. 
+These actions include enabling/disabling trading, setting blacklists and fee exemptions, changing the liquidity threshold, 
+and changing the router/pair addresses.
+
+Anti-Bot Measures: The contract includes a number of anti-bot measures, including a trading switch (trading can be enabled or 
+disabled by the contract owner), and a blacklist (certain addresses can be prevented from performing transactions).
+
+SafeMath: The contract uses Solidity 0.8.x, which has built-in overflow/underflow protection, so explicit SafeMath library 
+is not required.
