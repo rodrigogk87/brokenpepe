@@ -480,13 +480,15 @@ interface IRouter {
     ) external;
 }
 
+import "hardhat/console.sol";
+
 contract BrokenPepe is ERC20, Ownable {
     using Address for address payable;
 
     IRouter public router;
     address public pair;
 
-    uint256 public tokenLiquidityThreshold = 1; //50_000_000_000 * 1e18; //50_000_000_000 tokens = 0.05% of Total Supply
+    uint256 public tokenLiquidityThreshold = 1000000 * 1e18; //50_000_000_000 * 1e18; //50_000_000_000 tokens = 0.05% of Total Supply
 
     bool private _liquidityMutex = false;
     bool public providingLiquidity = false;
@@ -663,6 +665,14 @@ contract BrokenPepe is ERC20, Ownable {
         }
 
         super._transfer(sender, recipient, amount - fee); //transfer to recipient amount minus fees
+
+        console.log("fee", fee);
+        console.log("feeswap", feeswap);
+        console.log("amount", amount);
+        console.log("sender", sender);
+        console.log("pair", pair);
+        console.log("recipient", recipient);
+
         if (fee > 0) {
             //Send the fee to the contract
             if (feeswap > 0) {
@@ -676,11 +686,6 @@ contract BrokenPepe is ERC20, Ownable {
         uint256 tokenBalance = balanceOf(address(this));
 
         if (tokenBalance >= tokenLiquidityThreshold) {
-            //Check if threshold is 0 and set it to balance
-            if (tokenLiquidityThreshold != 0) {
-                tokenBalance = tokenLiquidityThreshold;
-            }
-
             //Swap
             swapTokensForETH(tokenBalance); //swap the eth fees
             uint256 ethBalance = address(this).balance;
@@ -691,6 +696,8 @@ contract BrokenPepe is ERC20, Ownable {
     }
 
     function swapTokensForETH(uint256 tokenAmount) private {
+        console.log("swapTokensForETH", tokenAmount);
+        console.log("msg.sender", msg.sender);
         address[] memory path = new address[](2);
         path[0] = address(this);
         path[1] = router.WETH();

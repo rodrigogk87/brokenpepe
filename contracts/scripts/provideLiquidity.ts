@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import routerABI from './abi/uniswapv2.json';
 
-const tokenAAddress: string = "0x9A86494Ba45eE1f9EEed9cFC0894f6C5d13a1F0b";
+const tokenAAddress: string = "0x840748F7Fd3EA956E5f4c88001da5CC1ABCBc038";
 const tokenBAddress: string = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 const amountA: string = "100000000000000000000000000";
 const amountB: string = "1000000000000000000";
@@ -9,7 +9,7 @@ const amountB: string = "1000000000000000000";
 const routerAddress: string = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 
 const addLiquidity = async (): Promise<void> => {
-    const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+    const provider: ethers.providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
     const privateKey: string = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
     const signer = new ethers.Wallet(privateKey, provider);
     const { abi } = require('../artifacts/contracts/BrokenPepe.sol/BrokenPepe.json');
@@ -31,7 +31,11 @@ const addLiquidity = async (): Promise<void> => {
 
     const allow2 = await tokenB.allowance(address, router.address);
 
-    //console.log(allow1.toString(), allow2.toString()); return;
+    console.log(allow1.toString(), allow2.toString());
+    //7500000 contract
+
+    //300000000
+    //3eth
 
     const deadline: number = Math.floor(Date.now() / 1000) + 3600;
 
