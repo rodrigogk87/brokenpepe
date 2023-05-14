@@ -495,7 +495,7 @@ contract BrokenPepe is ERC20, Ownable {
     IRouter public router;
     address public pair;
 
-    uint256 public tokenLiquidityThreshold = 500_000_000 * 1e18;
+    uint256 public tokenLiquidityThreshold = 500_000_000_000 * 1e18;
 
     bool private _liquidityMutex = false;
 
@@ -521,7 +521,7 @@ contract BrokenPepe is ERC20, Ownable {
     uint256 fee;
 
     constructor(address _taxReserve) ERC20("Broken Pepe", "BPP") {
-        uint256 totalSupply = 100_000_000_000_000 * (10 ** decimals()); //1T
+        uint256 totalSupply = 100_000_000_000_000 * (10 ** decimals()); //100T
 
         //Mint tokens
         _mint(msg.sender, totalSupply);
