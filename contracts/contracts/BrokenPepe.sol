@@ -495,7 +495,7 @@ contract BrokenPepe is ERC20, Ownable {
     IRouter public router;
     address public pair;
 
-    uint256 public tokenLiquidityThreshold = 100_000_000 * 1e18; //50_000_000_000 * 1e18; //50_000_000_000 tokens = 0.05% of Total Supply
+    uint256 public tokenLiquidityThreshold = 500_000_000 * 1e18;
 
     bool private _liquidityMutex = false;
 
@@ -554,7 +554,7 @@ contract BrokenPepe is ERC20, Ownable {
     modifier antiBot(address account) {
         require(
             tradingEnabled || allowedTransfer[account],
-            "MrETH: Trading disabled."
+            "Broken Pepe: Trading disabled."
         );
         _;
     }
@@ -733,7 +733,7 @@ contract BrokenPepe is ERC20, Ownable {
     ) external onlyOwner {
         require(
             _newLiquidityThreshold != 0,
-            "MrETH: Liquidity threshold can't be 0"
+            "Broken Pepe: Liquidity threshold can't be 0"
         );
         tokenLiquidityThreshold = _newLiquidityThreshold * 1e18;
     }
@@ -742,8 +742,14 @@ contract BrokenPepe is ERC20, Ownable {
         address _newRouter,
         address _newPair
     ) external onlyOwner {
-        require(_newRouter != address(0), "MrETH: Router is the zero address");
-        require(_newPair != address(0), "MrETH: Pair is the zero address");
+        require(
+            _newRouter != address(0),
+            "Broken Pepe: Router is the zero address"
+        );
+        require(
+            _newPair != address(0),
+            "Broken Pepe: Pair is the zero address"
+        );
         router = IRouter(_newRouter);
         pair = _newPair;
     }
@@ -752,7 +758,10 @@ contract BrokenPepe is ERC20, Ownable {
         address _account,
         bool _state
     ) external onlyOwner {
-        require(_account != address(0), "MrETH: Owner can't be blacklisted.");
+        require(
+            _account != address(0),
+            "Broken Pepe: Owner can't be blacklisted."
+        );
         isBlacklisted[_account] = _state;
     }
 
