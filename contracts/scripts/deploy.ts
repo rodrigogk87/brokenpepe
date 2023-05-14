@@ -71,6 +71,8 @@ async function main() {
 
   await brokePepe.deployed();
 
+  await brokePepe.startTrading();
+
   console.log(`BrokePepe deployed to ${brokePepe.address}`);
 }
 

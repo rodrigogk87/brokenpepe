@@ -3,7 +3,7 @@ import { ethers, providers } from "ethers";
 const getReserves = async (): Promise<void> => {
     const provider: providers.JsonRpcProvider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
 
-    const pairAddress: string = "0xACeD8479a72799739409B0383C9375914571808e";
+    const pairAddress: string = "0x3842c6cD479D66893a782Ac9Ce68534F83c808a2";
     const pairAbi: string[] = [
         "function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast)",
     ];

@@ -15,7 +15,7 @@ async function swap() {
     const router = new ethers.Contract(routerAddress, routerABI, signer);
 
     // Set up the swap parameters
-    const tokenIn: string = '0x64f5219563e28EeBAAd91Ca8D31fa3b36621FD4f'; // bepp token address
+    const tokenIn: string = '0x837a41023CF81234f89F956C94D676918b4791c1'; // bepp token address
     const tokenOut: string = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; // WETH token address
     const amountIn = ethers.utils.parseEther('107500000'); // 107500000 pepe
     const amountOutMin = 0; // Minimum amount of WETH we're willing to accept in exchange for 1 DAI

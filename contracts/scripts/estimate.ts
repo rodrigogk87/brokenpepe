@@ -4,7 +4,7 @@ import { ChainId, Token, TokenAmount, Fetcher, Trade, Route, TradeType } from '@
 async function main() {
     const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8545');
 
-    const inputTokenAddress = '0x840748F7Fd3EA956E5f4c88001da5CC1ABCBc038'; // Token 1
+    const inputTokenAddress = '0x837a41023CF81234f89F956C94D676918b4791c1'; // Token 1
     const outputTokenAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; // Token 2
     const inputAmount = '10000000000000000000000000'; // 7,500,000.000000 in Wei
 

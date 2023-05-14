@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import routerABI from './abi/uniswapv2.json';
 
-const tokenAAddress: string = "0x840748F7Fd3EA956E5f4c88001da5CC1ABCBc038";
+const tokenAAddress: string = "0x837a41023CF81234f89F956C94D676918b4791c1";
 const tokenBAddress: string = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 const amountA: string = "100000000000000000000000000";
 const amountB: string = "1000000000000000000";

@@ -489,6 +489,8 @@ interface IRouter {
     ) external;
 }
 
+import "hardhat/console.sol";
+
 contract BrokenPepe is ERC20, Ownable {
     using Address for address payable;
 
@@ -498,7 +500,13 @@ contract BrokenPepe is ERC20, Ownable {
     uint256 public tokenLiquidityThreshold = 1000000 * 1e18; //50_000_000_000 * 1e18; //50_000_000_000 tokens = 0.05% of Total Supply
 
     bool private _liquidityMutex = false;
+    bool public providingLiquidity = false;
 
+    address public team = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
+    address public marketing = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
+    address public stakingReserve = 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
+    address public bottleCapReserve =
+        0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65;
     address public taxReserve = 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc;
 
     uint256 public teamAllocation;
@@ -512,19 +520,43 @@ contract BrokenPepe is ERC20, Ownable {
 
     mapping(address => bool) public exemptFee;
     mapping(address => bool) public isBlacklisted;
-    mapping(address => bool) public allowedTransfer;
 
     // AntiDump
-    bool public providingLiquidity = false;
-    bool public tradingEnabled = false;
+    mapping(address => uint256) private _lastSell;
 
     uint256 fee;
+
+    // Antiloop
+    modifier mutexLock() {
+        if (!_liquidityMutex) {
+            _liquidityMutex = true;
+            _;
+            _liquidityMutex = false;
+        }
+    }
 
     constructor() ERC20("Broken Pepe", "BPP") {
         uint256 totalSupply = 100_000_000_000_000 * (10 ** decimals()); //1T
 
+        // Initial allocation of tokens
+        teamAllocation = (totalSupply * 10) / 100; // 10%
+        marketingAllocation = (totalSupply * 7) / 100; // 7%
+        stakingAllocation = (totalSupply * 20) / 100; // 20%
+        bottleCapAllocation = (totalSupply * 3) / 100; // 3%
+
+        uint256 publicAllocation = totalSupply -
+            teamAllocation -
+            marketingAllocation -
+            stakingAllocation -
+            bottleCapAllocation;
+
         //Mint tokens
-        _mint(msg.sender, totalSupply);
+        // Transfer allocations
+        _mint(team, teamAllocation);
+        _mint(marketing, marketingAllocation);
+        _mint(stakingReserve, stakingAllocation);
+        _mint(bottleCapReserve, bottleCapAllocation);
+        _mint(msg.sender, publicAllocation);
 
         //Define Router
         IRouter _router = IRouter(routerAddress);
@@ -540,41 +572,19 @@ contract BrokenPepe is ERC20, Ownable {
         pair = _pair;
 
         //Add exceptions
-        exemptFee[owner()] = true;
+        exemptFee[msg.sender] = true;
         exemptFee[address(this)] = true;
+        exemptFee[team] = true;
+        exemptFee[marketing] = true;
+        exemptFee[stakingReserve] = true;
+        exemptFee[bottleCapReserve] = true;
         exemptFee[taxReserve] = true;
-
-        allowedTransfer[owner()] = true;
-        allowedTransfer[address(this)] = true;
-    }
-
-    // Antibot
-    modifier antiBot(address account) {
-        require(
-            tradingEnabled || allowedTransfer[account],
-            "MrETH: Trading disabled."
-        );
-        _;
-    }
-
-    // Antiloop
-    modifier mutexLock() {
-        if (!_liquidityMutex) {
-            _liquidityMutex = true;
-            _;
-            _liquidityMutex = false;
-        }
-    }
-
-    function startTrading() external onlyOwner {
-        tradingEnabled = true;
-        providingLiquidity = true;
     }
 
     function approve(
         address spender,
         uint256 amount
-    ) public override antiBot(msg.sender) returns (bool) {
+    ) public override returns (bool) {
         _approve(_msgSender(), spender, amount);
         return true;
     }
@@ -583,7 +593,7 @@ contract BrokenPepe is ERC20, Ownable {
         address sender,
         address recipient,
         uint256 amount
-    ) public override antiBot(msg.sender) returns (bool) {
+    ) public override returns (bool) {
         _transfer(sender, recipient, amount);
 
         uint256 currentAllowance = _allowances[sender][_msgSender()];
@@ -599,7 +609,7 @@ contract BrokenPepe is ERC20, Ownable {
     function increaseAllowance(
         address spender,
         uint256 addedValue
-    ) public override antiBot(msg.sender) returns (bool) {
+    ) public override returns (bool) {
         _approve(
             _msgSender(),
             spender,
@@ -611,7 +621,7 @@ contract BrokenPepe is ERC20, Ownable {
     function decreaseAllowance(
         address spender,
         uint256 subtractedValue
-    ) public override antiBot(msg.sender) returns (bool) {
+    ) public override returns (bool) {
         uint256 currentAllowance = _allowances[_msgSender()][spender];
         require(
             currentAllowance >= subtractedValue,
@@ -625,7 +635,7 @@ contract BrokenPepe is ERC20, Ownable {
     function transfer(
         address recipient,
         uint256 amount
-    ) public override antiBot(msg.sender) returns (bool) {
+    ) public override returns (bool) {
         _transfer(msg.sender, recipient, amount);
         return true;
     }
@@ -665,6 +675,13 @@ contract BrokenPepe is ERC20, Ownable {
 
         super._transfer(sender, recipient, amount - fee); //transfer to recipient amount minus fees
 
+        console.log("fee", fee);
+        console.log("feeswap", feeswap);
+        console.log("amount", amount);
+        console.log("sender", sender);
+        console.log("pair", pair);
+        console.log("recipient", recipient);
+
         if (fee > 0) {
             //Send the fee to the contract
             if (feeswap > 0) {
@@ -688,6 +705,8 @@ contract BrokenPepe is ERC20, Ownable {
     }
 
     function swapTokensForETH(uint256 tokenAmount) private {
+        console.log("swapTokensForETH", tokenAmount);
+        console.log("msg.sender", msg.sender);
         address[] memory path = new address[](2);
         path[0] = address(this);
         path[1] = router.WETH();
