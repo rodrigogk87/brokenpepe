@@ -15,9 +15,9 @@ async function swap() {
     const router = new ethers.Contract(routerAddress, routerABI, signer);
 
     // Set up the swap parameters
-    const tokenIn: string = '0x96E303b6D807c0824E83f954784e2d6f3614f167'; // bepp token address
-    const tokenOut: string = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; // WETH token address
-    const amountIn = ethers.utils.parseEther('222000000'); // 107500000 pepe
+    const tokenOut: string = '0x96E303b6D807c0824E83f954784e2d6f3614f167'; // bepp token address
+    const tokenIn: string = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; // WETH token address
+    const amountIn = ethers.utils.parseEther('0.1'); // 0.1 ETH
     const amountOutMin = 0; // Minimum amount of WETH we're willing to accept in exchange for 1 DAI
     const deadline: number = Math.floor(Date.now() / 1000) + 60 * 1; // 1 minute deadline
 
@@ -33,13 +33,12 @@ async function swap() {
     // Perform the swap
     const path = [tokenIn, tokenOut];
     const to = from;
-    const swapTx = await router.swapExactTokensForETHSupportingFeeOnTransferTokens(
-        amountIn,
+    const swapTx = await router.swapExactETHForTokens(
         amountOutMin,
         path,
         to,
         deadline,
-        { gasLimit: 30000000 }
+        { gasLimit: 30000000, value: amountIn }
     );
     console.log('Swap successful!', swapTx);
 };

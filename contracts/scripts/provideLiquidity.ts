@@ -1,10 +1,10 @@
 import { ethers } from 'ethers';
 import routerABI from './abi/uniswapv2.json';
 
-const tokenAAddress: string = "0x837a41023CF81234f89F956C94D676918b4791c1";
+const tokenAAddress: string = "0x96E303b6D807c0824E83f954784e2d6f3614f167";
 const tokenBAddress: string = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
-const amountA: string = "100000000000000000000000000";
-const amountB: string = "1000000000000000000";
+const amountA: string = "2000000000000000000000000000";//2k millons
+const amountB: string = "1000000000000000000";//1 eth
 
 const routerAddress: string = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 

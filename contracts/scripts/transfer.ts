@@ -31,7 +31,7 @@ import '@nomiclabs/hardhat-ethers';
   */
 
 async function main() {
-  const contract: string = '0x837a41023CF81234f89F956C94D676918b4791c1';
+  const contract: string = '0x96E303b6D807c0824E83f954784e2d6f3614f167';
   const privateKey: string = '0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0';//'0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0';
 
   // Create a provider object
@@ -43,7 +43,7 @@ async function main() {
   const { abi } = require('../artifacts/contracts/BrokenPepe.sol/BrokenPepe.json');
 
   const pepe: ethers.Contract = await new ethers.Contract(contract, abi, signer);
-  const transferAM: ethers.BigNumber = ethers.utils.parseEther('90000000');
+  const transferAM: ethers.BigNumber = ethers.utils.parseEther('800000000');
   //await pepe.approve('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', transferAM);
   const transfer: ethers.ContractTransaction = await pepe.transfer('0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199', transferAM);
 
