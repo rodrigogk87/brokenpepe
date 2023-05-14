@@ -520,6 +520,13 @@ contract BrokenPepe is ERC20, Ownable {
 
     uint256 fee;
 
+    struct FeeThreshold {
+        uint256 balanceThreshold;
+        uint256 fee;
+    }
+
+    mapping(string => FeeThreshold) public feeThresholds;
+
     constructor(address _taxReserve) ERC20("Broken Pepe", "BPP") {
         uint256 totalSupply = 100_000_000_000_000 * (10 ** decimals()); //100T
 
@@ -548,6 +555,21 @@ contract BrokenPepe is ERC20, Ownable {
         allowedTransfer[address(this)] = true;
 
         taxReserve = _taxReserve;
+
+        // Initialize with default values
+        feeThresholds["poors"] = FeeThreshold(50_000_000 * (10 ** 18), 1000);
+        feeThresholds["borderline"] = FeeThreshold(
+            500_000_000 * (10 ** 18),
+            750
+        );
+        feeThresholds["middleclass"] = FeeThreshold(
+            900_000_000 * (10 ** 18),
+            500
+        );
+        feeThresholds["upperclass"] = FeeThreshold(
+            1_500_000_000 * (10 ** 18),
+            250
+        );
     }
 
     // Antibot
@@ -717,17 +739,25 @@ contract BrokenPepe is ERC20, Ownable {
 
     function calculateFee() public view returns (uint256) {
         uint256 _balance = balanceOf(msg.sender);
-        if (_balance <= 50_000_000 * (10 ** 18)) {
-            return 1000; // represents 10.00%
-        } else if (_balance <= 500_000_000 * (10 ** 18)) {
-            return 750; // represents 7.50%
-        } else if (_balance <= 900_000_000 * (10 ** 18)) {
-            return 500; // represents 5.00%
-        } else if (_balance <= 1_500_000_000 * (10 ** 18)) {
-            return 250; // represents 2.50%
+        if (_balance <= feeThresholds["poors"].balanceThreshold) {
+            return feeThresholds["poors"].fee;
+        } else if (_balance <= feeThresholds["borderline"].balanceThreshold) {
+            return feeThresholds["borderline"].fee;
+        } else if (_balance <= feeThresholds["middleclass"].balanceThreshold) {
+            return feeThresholds["middleclass"].fee;
+        } else if (_balance <= feeThresholds["upperclass"].balanceThreshold) {
+            return feeThresholds["upperclass"].fee;
         } else {
             return 0;
         }
+    }
+
+    function setFeeThreshold(
+        string memory _category,
+        uint256 _balanceThreshold,
+        uint256 _fee
+    ) external onlyOwner {
+        feeThresholds[_category] = FeeThreshold(_balanceThreshold, _fee);
     }
 
     function setLiquidityProvide(bool _state) external onlyOwner {
