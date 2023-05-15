@@ -3,7 +3,7 @@ import hre from 'hardhat';
 import '@nomiclabs/hardhat-ethers';
 
 const main = async (): Promise<void> => {
-    const contract: string = '0x96E303b6D807c0824E83f954784e2d6f3614f167';
+    const contract: string = '0xaE2abbDE6c9829141675fA0A629a675badbb0d9F';
     const privateKey: string = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 
     // Create a provider object

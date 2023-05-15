@@ -1,23 +1,26 @@
 /**
  * BrokenPepe v1.0
- * designed and engineered by Jscrui && xilom.
- * author: 0xJscrui & xilom.
  * SPDX-License-Identifier: MIT
  *
- * Tokenomics:
- * Liquidity        60%
- * Staking          20%
- * Team             10%
- * Marketing         7%
- * Bottle Caps       3%
+ * TOKENOMICS:
  *
- * Taxes
- * POOR             10%
- * LOW CLASS       7.5%
- * MIDDLE CLASS      5%
- * UPPER CLASS     2.5%
- * RICH      No Tax for the rich!
- * Total Supply: 100_000_000_000_000 BPP
+ * Total Supply:
+ *  100_000_000_000_000 BPP
+ *
+ * Allocation:
+ *  Liquidity        60%
+ *  Staking          20%
+ *  Team             10%
+ *  Marketing         7%
+ *  Bottle Caps       3%
+ *
+ * Taxes:
+ *  POOR             10%
+ *  LOW CLASS       7.5%
+ *  MIDDLE CLASS      5%
+ *  UPPER CLASS     2.5%
+ *  RICH            No Tax for the rich!
+ *
  */
 
 pragma solidity ^0.8.17;
@@ -495,7 +498,7 @@ contract BrokenPepe is ERC20, Ownable {
     IRouter public router;
     address public pair;
 
-    uint256 public tokenLiquidityThreshold = 500_000_000 * 1e18;
+    uint256 public tokenLiquidityThreshold = 500_000_000 * 1e18; // 0.05% of total supply
 
     bool private _liquidityMutex = false;
 
@@ -508,7 +511,7 @@ contract BrokenPepe is ERC20, Ownable {
 
     uint256 public genesis_block;
 
-    address public routerAddress = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D; //uniswapv2
+    address public routerAddress = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D; //UniwapV2
 
     mapping(address => bool) public exemptFee;
     mapping(address => bool) public isBlacklisted;
@@ -799,18 +802,6 @@ contract BrokenPepe is ERC20, Ownable {
             "Broken Pepe: Owner can't be blacklisted."
         );
         isBlacklisted[_account] = _state;
-    }
-
-    function setBulkIsBlacklisted(
-        address[] calldata accounts,
-        bool _state
-    ) external onlyOwner {
-        for (uint256 i = 0; i < accounts.length; ) {
-            isBlacklisted[accounts[i]] = _state;
-            unchecked {
-                i++;
-            }
-        }
     }
 
     function setExemptFee(address _address, bool _state) external onlyOwner {

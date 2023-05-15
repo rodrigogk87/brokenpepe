@@ -33,7 +33,7 @@ let classes = [
 ];
 For each category in classes, execute the function setFeeThreshold to adjust the balanceThreshold and fee:
 
-javascript code
+javascript pwdcode
 for (let cls of classes) {
     const setFeeThresholdTx = await feeContract.setFeeThreshold(cls.name, cls.balanceThreshold, cls.fee);
     await setFeeThresholdTx.wait();

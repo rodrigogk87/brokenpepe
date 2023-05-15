@@ -28,4 +28,4 @@ const wrapEth = async (amount: ethers.BigNumber) => {
 }
 
 // Example usage: wrap 1 ETH into WETH
-wrapEth(ethers.utils.parseEther('1'));
+wrapEth(ethers.utils.parseEther('100'));

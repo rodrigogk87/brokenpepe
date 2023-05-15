@@ -15,7 +15,7 @@ const main = async (): Promise<void> => {
     const pepe: ethers.Contract = new ethers.Contract(contract, abi, signer);
 
 
-    let tokenLiquidityThreshold = ethers.utils.parseEther('1000000000').toString();
+    let tokenLiquidityThreshold = ethers.utils.parseEther('500000000').toString();
 
     const tokenLiquidityThresholdTx = await pepe.setTokenLiquidityThreshold(tokenLiquidityThreshold);
 
