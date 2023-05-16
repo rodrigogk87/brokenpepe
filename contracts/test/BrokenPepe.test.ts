@@ -9,7 +9,7 @@ describe("BrokenPepe", function () {
         const [owner, otherAccount, taxReserve] = await ethers.getSigners();
 
         const BrokenPepe = await ethers.getContractFactory("BrokenPepe");
-        const brokenPepe = await BrokenPepe.deploy({ gasLimit: 3000000 });
+        const brokenPepe = await BrokenPepe.deploy(otherAccount.address, { gasLimit: 30000000 });
         await brokenPepe.deployed();
 
         return { brokenPepe, owner, otherAccount, taxReserve };

@@ -18,6 +18,11 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY!],
     },
   },
+  gasReporter: {
+    currency: 'USD',
+    gasPrice: 20,
+    outputFile: process.env.CI ? 'gas-report.txt' : undefined
+  }
 };
 
 

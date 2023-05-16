@@ -17,6 +17,7 @@
     "npm": "^9.6.6"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.2"
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "hardhat-gas-reporter": "^1.0.9"
   }
 }
