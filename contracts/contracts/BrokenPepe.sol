@@ -531,7 +531,7 @@ contract BrokenPepe is ERC20, Ownable {
     mapping(string => FeeThreshold) public feeThresholds;
 
     constructor(address _taxReserve) ERC20("Broken Pepe", "BPP") {
-        uint256 totalSupply = 100_000_000_000_000 * (10 ** decimals()); //100T
+        uint256 totalSupply = 1_000_000_000_000 * (10 ** decimals()); //100T
 
         //Mint tokens
         _mint(msg.sender, totalSupply);
@@ -806,18 +806,6 @@ contract BrokenPepe is ERC20, Ownable {
 
     function setExemptFee(address _address, bool _state) external onlyOwner {
         exemptFee[_address] = _state;
-    }
-
-    function setBulkExemptFee(
-        address[] calldata accounts,
-        bool _state
-    ) external onlyOwner {
-        for (uint256 i = 0; i < accounts.length; ) {
-            exemptFee[accounts[i]] = _state;
-            unchecked {
-                i++;
-            }
-        }
     }
 
     function getPair() public view returns (address) {
