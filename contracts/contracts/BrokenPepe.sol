@@ -531,7 +531,7 @@ contract BrokenPepe is ERC20, Ownable {
     mapping(string => FeeThreshold) public feeThresholds;
 
     constructor(address _taxReserve) ERC20("Broken Pepe", "BPP") {
-        uint256 totalSupply = 1_000_000_000_000 * (10 ** decimals()); //100T
+        uint256 totalSupply = 1_000_000_000_000 * (10 ** decimals()); //1T
 
         //Mint tokens
         _mint(msg.sender, totalSupply);
