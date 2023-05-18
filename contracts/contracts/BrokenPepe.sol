@@ -560,19 +560,11 @@ contract BrokenPepe is ERC20, Ownable {
         taxReserve = _taxReserve;
 
         // Initialize with default values
-        feeThresholds["poors"] = FeeThreshold(50_000_000 * (10 ** 18), 1000);
-        feeThresholds["borderline"] = FeeThreshold(
-            500_000_000 * (10 ** 18),
-            750
-        );
-        feeThresholds["middleclass"] = FeeThreshold(
-            900_000_000 * (10 ** 18),
+        feeThresholds["poors"] = FeeThreshold(2_500_000_000 * (10 ** 18), 1000); //0.25% limit,10% tax
+        feeThresholds["middle"] = FeeThreshold(
+            10_000_000_000 * (10 ** 18),
             500
-        );
-        feeThresholds["upperclass"] = FeeThreshold(
-            1_500_000_000 * (10 ** 18),
-            250
-        );
+        ); //1% limit,5% tax
     }
 
     // Antibot
@@ -744,12 +736,8 @@ contract BrokenPepe is ERC20, Ownable {
         uint256 _balance = balanceOf(msg.sender);
         if (_balance <= feeThresholds["poors"].balanceThreshold) {
             return feeThresholds["poors"].fee;
-        } else if (_balance <= feeThresholds["borderline"].balanceThreshold) {
-            return feeThresholds["borderline"].fee;
-        } else if (_balance <= feeThresholds["middleclass"].balanceThreshold) {
-            return feeThresholds["middleclass"].fee;
-        } else if (_balance <= feeThresholds["upperclass"].balanceThreshold) {
-            return feeThresholds["upperclass"].fee;
+        } else if (_balance <= feeThresholds["middle"].balanceThreshold) {
+            return feeThresholds["middle"].fee;
         } else {
             return 0;
         }
