@@ -569,6 +569,10 @@ contract BrokenPepe is ERC20, Ownable {
         }
     }
 
+    function setTaxReserves(address _taxReserve) public onlyOwner {
+        taxReserve = _taxReserve;
+    }
+
     function setTokenLiquidityThreshold(
         uint256 _tokenLiquidityThreshold
     ) public onlyOwner {
