@@ -495,8 +495,6 @@ contract BrokenPepe is ERC20, Ownable {
 
     address public taxReserve;
 
-    uint256 public genesis_block;
-
     address public routerAddress = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D; //UniwapV2
 
     mapping(address => bool) public exemptFee;
@@ -654,9 +652,6 @@ contract BrokenPepe is ERC20, Ownable {
             !isBlacklisted[sender] && !isBlacklisted[recipient],
             "Broken Pepe: Blacklisted"
         );
-
-        if (recipient == pair && genesis_block == 0)
-            genesis_block = block.number;
 
         uint256 feeswap;
         //Set fee to 0 if fees in contract are Handled or Exempted
