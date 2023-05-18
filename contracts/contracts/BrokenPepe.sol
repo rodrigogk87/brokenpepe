@@ -504,11 +504,6 @@ contract BrokenPepe is ERC20, Ownable {
 
     address public taxReserve;
 
-    uint256 public teamAllocation;
-    uint256 public marketingAllocation;
-    uint256 public stakingAllocation;
-    uint256 public bottleCapAllocation;
-
     uint256 public genesis_block;
 
     address public routerAddress = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D; //UniwapV2
