@@ -5,21 +5,12 @@
  * TOKENOMICS:
  *
  * Total Supply:
- *  100_000_000_000_000 BPP
+ * 1_000_000_000_000 BPP
  *
- * Allocation:
- *  Liquidity        60%
- *  Staking          20%
- *  Team             10%
- *  Marketing         7%
- *  Bottle Caps       3%
- *
- * Taxes:
- *  POOR             10%
- *  LOW CLASS       7.5%
- *  MIDDLE CLASS      5%
- *  UPPER CLASS     2.5%
- *  RICH            No Tax for the rich!
+ * Initial Taxes:
+ * POOR             10%
+ * MIDDLE            5%
+ * RICH              No Tax for the rich! :)
  *
  */
 
