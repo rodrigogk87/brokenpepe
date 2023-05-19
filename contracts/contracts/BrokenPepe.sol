@@ -7,11 +7,11 @@
  * Total Supply:
  * 1_000_000_000_000 BPP
  *
- * Initial Taxes:
- * POOR             10%
- * MIDDLE            5%
- * RICH              No Tax for the rich! :)
- *
+ * Initial Taxes & Scales:
+ * POOR             10% of tax if holds <= 0.25% of total supply
+ * MIDDLE            5% of tax if holds > 0.25% < 1%
+ * RICH              No Tax for those who holds >= 1% 
+ * 
  */
 
 pragma solidity ^0.8.17;
